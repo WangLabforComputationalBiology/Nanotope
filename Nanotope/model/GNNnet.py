@@ -5,7 +5,7 @@ from torch_geometric.nn.conv import EGConv,GATConv
 from torch.nn import Linear, Dropout,ELU
 import torch.nn.functional as F
 
-class Net(torch.nn.Module):
+class Nanotope(torch.nn.Module):
     def __init__(self, hidden_channels, num_layers, num_heads, num_bases):
         super().__init__()
         
@@ -56,8 +56,7 @@ class Net(torch.nn.Module):
 
     def forward(self, data):
         x, edge_index, batch  = data.x.cuda(), data.edge_index.cuda(), data.batch
-        batch_size = batch.max().item()+1
-
+        batch_size = int(batch.max().item()+1)
         x = x.view(-1,140,512).permute(0,2,1)
         x1 = F.relu(self.Conv1D(x))
         x1 = F.relu(self.Conv1D_2(x1))
